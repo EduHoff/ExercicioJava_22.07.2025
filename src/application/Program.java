@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import entities.Employee;
 
@@ -13,6 +15,7 @@ public class Program {
 
 	public static void main(String[] args) {
 		
+		Locale.setDefault(Locale.US);
 		String path = "./External/in.txt";
 		Scanner sc = new Scanner(System.in);
 		List<Employee> employeeList = new ArrayList<Employee>();
@@ -41,9 +44,38 @@ public class Program {
 			sc.close();
 		}
 		
+
+				
+				
+		System.out.println("Email of people whose salary is more than " + String.format("%.2f", salaryLimit) + ":");
+		
+
+		employeeList.stream()
+		    .filter(x -> x.getSalary() > salaryLimit)
+		    .map(Employee::getEmail)
+		    .sorted()
+		    .forEach(System.out::println);
+		/*
 		for(Employee e : employeeList) {
-			System.out.println(e.getName());
+			if(e.getSalary() > salaryLimit) {
+				System.out.println(e.getEmail());		
+			}
 		}
+		*/
+		
+		double sum = employeeList.stream()
+			    .filter(x -> x.getName().startsWith("M"))
+			    .mapToDouble(Employee::getSalary)
+			    .sum();
+		
+		System.out.println("Sum of salary of people whose name start with 'M': " + String.format("%.2f", sum));
+		
+
+		
+
+
+
+		
 
 	}
 
